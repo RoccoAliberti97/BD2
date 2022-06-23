@@ -2,13 +2,11 @@
 // Initialize express router
 let router = require('express').Router();
 // Set default API response
-
-
-Film = require('./modelFilm');
-
+Slam = require('./modelSlam');
 // Handle index actions
-router.get('/getAll',function (req, res) {
-    Film.collection("statistics").find({},function (err, Films) {
+
+router.get('/getSlams',function (req, res) {
+    Slam.find({},function (err, Slams) {
         if (err) {
             res.json({
                 status: "error",
@@ -18,25 +16,7 @@ router.get('/getAll',function (req, res) {
         res.json({
             status: "success",
             message: "Films retrieved successfully",
-            data: Films
-        });
-    });
-});
-
-
-// Handle index actions
-router.get('/getFilms',function (req, res) {
-    Film.find({},function (err, Films) {
-        if (err) {
-            res.json({
-                status: "error",
-                message: err,
-            });
-        }
-        res.json({
-            status: "success",
-            message: "Films retrieved successfully",
-            data: Films
+            data: Slams
         });
     });
 });
@@ -60,8 +40,6 @@ router.get('/getTotalRevenueForDirector/:regista', function (req, res) {
     }); 
 });
 
-
-
 router.get('/getTotalMetascoreForDirector/:regista', function (req, res) { 
     Film.aggregate([ 
         {$match: {Director: req.params.regista}}, 
@@ -80,8 +58,7 @@ router.get('/getTotalMetascoreForDirector/:regista', function (req, res) {
     }); 
 });
 
-//Handle worst worst movie for actor 
-
+//Handle worst worst movie for actor
 router.get('/get_worst_movie_for_actor/:attore/:max_rating', function (req, res) { 
     var rating_inserito = parseInt(req.params.max_rating, 10); 
     Film.find({Actors:req.params.attore,Rating:{$lte:req.params.max_rating}},function (err, Films) { 
@@ -99,30 +76,10 @@ router.get('/get_worst_movie_for_actor/:attore/:max_rating', function (req, res)
         }); 
     }); 
 });
-/*router.get('/get_worst_movie_for_actor/:attore/:max_rating', function (req, res) { 
-    var rating_inserito = parseInt(req.params.max_rating, 10); 
-    Film.aggregate([ 
-        {$match: {Actors:req.params.attore, Rating:{$lte:rating_inserito}}}, 
-        {$group : { _id:"$Title", rating:{ "$first": "$Rating" }}}],function (err, Films) { 
-        if (err) { 
-            res.json({ 
-                status: "error", 
-                message: err, 
-            }); 
-        } 
-        res.json({ 
-             
-            status: "success", 
-            message: "Films retrieved successfully", 
-            data: Films 
-        }); 
-    }); 
-});*/
 
-//ricerca film per titolo
-router.get('/getFilmfForTitle/:title', function (req, res) {
-
-    Film.find({Title:req.params.title},function (err, Films) {
+//ricerca slam per nome
+router.get('/getSlamsForName/:name', function (req, res) {
+    Slam.find({TOURNAMENT:req.params.name},function (err, Slams) {
         if (err) {
             res.json({
                 status: "error",
@@ -131,12 +88,11 @@ router.get('/getFilmfForTitle/:title', function (req, res) {
         }
         res.json({
             status: "success",
-            message: "Films retrieved successfully",
-            data: Films
+            message: "Slams retrieved successfully",
+            data: Slams
         });
     });
 });
-
 
 //Handle average rating from director 
 router.get('/getAVGRatingForDirector/:regista', function (req, res) { 
