@@ -138,7 +138,6 @@
 $(document).ready(function(){
     var table = $('#myTable').DataTable();
 
-
     //RIEMPI TABELLA FILMS
     $.ajax({
         url: "http://localhost:8080/api/getFilms",
@@ -148,13 +147,13 @@ $(document).ready(function(){
         success: function(resp){
 
             $.each(resp.data, function( index, value ) {
-                generi="\n";
-                $.each(value.Genre, function(index,value){
+               generi = "\n";
+                $.each(value.Tournament_Surface, function(index,value){
                     generi+=value+"\n";
                 });
                 //$('#myTable tbody').append("<tr data-toggle='modal' data-target='#myModal'><td>"+value.Title+"</td><td>"+value.Director+"</td><td>"+value.Year+"</td><td>"+value.Rating+"</td></tr>");
                 table.row.add([
-                    value.Title,
+                    value.Winner,
                     value.Director,
                     value.Year,
                     value.Rating]).draw();
