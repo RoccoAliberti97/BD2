@@ -6,8 +6,8 @@ const client = new MongoClient(uri);
 async function run() {
     try {
         await client.connect();
-        const database = client.db("database2");
-        const tennis = database.collection("statistics");
+        const database = client.db("tennis");
+        const tennis = database.collection("slam");
         // query for movies that have a runtime less than 15 minutes
         const query = {WINNER : "Novak Djokovic"};
         const cursor = tennis.find(query);

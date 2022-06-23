@@ -25,87 +25,86 @@
       <h2>Ricerca:</h2>
       <ul class="nav nav-pills flex-column">
         <li class="nav-item">
-          <a class="nav-link " href="index.html">Generica</a>
+          <a class="nav-link " href="index.html">Generico</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="1genere.html">Confronto Generi</a>
+          <a class="nav-link active" href="1Genere.html">Confronto tornei</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="2RangeAnni.html">Film per anni</a>
+          <a class="nav-link" href="2Vincitori.html">Vincitori per anni</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="3Regista.html">Confronto registi</a>
+          <a class="nav-link" href="3Confrontotennisti.html">Confronto tennisti</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="4Ricavo.html">Incassi per genere</a>
+          <a class="nav-link" href="4Incassi.html">Incassi per torneo</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="5Attore.html">Peggiori film per attore</a>
+          <a class="nav-link" href="5Peggiorfinalista.html">Peggior finalista</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="6Rating.html">Migliori film per anno</a>
+          <a class="nav-link" href="6Ranking.html">Miglior tennista per torneo</a>
         </li>
       </ul>
       <hr class="d-sm-none">
     </div>
     <div class="col-sm-9">
-       <div class="row">
+      <div class="row">
 
         <div class="col-sm-12 text-center">
         <br>
-        <h4>Film migliori per anno</h4>
-        <p>Visualizza i film di un determinato anno con rating maggiore uguale a quello inserito</p>
+        <h4>Ricerca Vincitori per Anni</h4>
+        <p>Visualizza la lista dei vincitori di tutti i tornei in un determinato intervallo di anni</p>
         </div>
 
-      <div class="col-sm-4">
+      <div class="col-sm-8">
       <h5>Step 1</h5>
         
         <form action="">
-          <div class="form-group">
-          <label for="sel1">Scegli l'anno:</label>
-          <select class="form-control" id="anno">
-          <option>2006</option>
-          <option>2007</option>
-          <option>2008</option>
-          <option>2009</option>
-          <option>2010</option>
-          <option>2011</option>
-          <option>2012</option>
-          <option>2013</option>
-          <option>2014</option>
-          <option>2015</option>
-          <option>2016</option>
-          </select>
-          </div>
+        <label for="customRange">Seleziona Anni:</label>
+        <input id="myRange" type="range" class="custom-range"  name="points1" min="2006" max="2016" >
         </form>
+        <p>Dal: <span id="demo"></span></p>
+        <form action="">
+        <input id="myRange2" type="range" class="custom-range" name="points2" min="2006" max="2016" >
+        </form>
+        <p>Al: <span id="demo2"></span></p>
 
     </div>
-
     <div class="col-sm-4">
-      <h5>Step 2</h5>
-        <div class="form-group">
-          <label for="usr">Seleziona Rating Minimo</label>
-          <input type="text" class="form-control" id="rating">
-        </div>
-    </div>
-
-    <div class="col-sm-4">
-      <h5>Step 3</h5>  
+      <h5>Step 2</h5>  
         <label >Cerca:</label> <br>
        <button type="submit" onclick="apriTabella()" class="btn btn-primary">Cerca</button>
     </div>
 
       </div>
-     
+ 
 
     </div>
   </div>
 </div>
 
 <script>
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+
+var slider2 = document.getElementById("myRange2");
+var output2 = document.getElementById("demo2");
+output2.innerHTML = slider2.value;
+
+slider2.oninput = function() {
+  output2.innerHTML = this.value;
+}
+
 function apriTabella(){
-      window.open("RatingMaggioreTable.html?"+$("#anno option:selected").text()+"&"+document.getElementById("rating").value);
-    }
+  window.open("2Tab.html?"+slider.value+"&"+slider2.value);
+}
+
 </script>
 
 
