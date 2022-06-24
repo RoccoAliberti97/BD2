@@ -43,7 +43,7 @@ router.get('/getTotalRevenueForPlayer/:tennista', function (req, res) {
 //Handle worst worst movie for actor
 router.get('/get_worst_movie_for_actor/:attore/:max_rating', function (req, res) { 
     var rating_inserito = parseInt(req.params.max_rating, 10); 
-    Film.find({Actors:req.params.attore,Rating:{$lte:req.params.max_rating}},function (err, Films) { 
+    Slam.find({RUNNER_UP:req.params.attore,RUNNER_UP_ATP_RANKING:{$lte:req.params.max_rating}},function (err, Films) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -140,11 +140,11 @@ router.get('/getFilmsYearsGenre/:genere/:from_to', function (req, res) {
     var from=parseInt(range[0]);
     var to=parseInt(range[1]);
     Slam.aggregate([
-            {$match:{Genre:req.params.genere}},
-            {$match:{$and:[{Year:{$gte: from}}, {Year:{$lte: to}}]}},
+            {$match:{TOURNAMENT_SURFACE:req.params.genere}},
+            {$match:{$and:[{YEAR:{$gte: from}}, {YEAR:{$lte: to}}]}},
             {
                  $group: {
-                       _id: "$Year",
+                       _id: "YEAR",
                        total: { $sum: 1 }
                    }
             }],function (err, Films) {
@@ -223,9 +223,9 @@ router.get('/getTennisPlayers',function(req, res){
 
 // RESTITUISCE I REGISTI PRESENTI NEL DATASET 
 router.get('/getActors',function(req, res){ 
-    Film.aggregate([ 
-        {"$unwind": "$Actors" } ,
-        { "$group": { _id: "$Actors" } }],function(err, Actors) { 
+    Slam.aggregate([
+        {"$unwind": "$RUNNER_UP" } ,
+        { "$group": { _id: "$RUNNER_UP" } }],function(err, Actors) {
         if (err) { 
             res.json({ 
                 status: "error", 

@@ -99,8 +99,6 @@ $(document).ready(function(){
         contentType: "application/json",
         success: function(resp){
             $.each(resp.data, function( index, value ) {
-                $.each(value, function(index,value){
-                });
                 table.row.add([
                     value.TOURNAMENT,
                     value.TOURNAMENT_SURFACE,

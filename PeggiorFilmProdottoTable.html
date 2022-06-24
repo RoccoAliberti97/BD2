@@ -66,7 +66,6 @@
                 <th>Anno</th>
                 <th>Rating</th>
                 <th>Incasso (milioni)</th>
-                <th>Durata</th>
               </tr>
             </thead>
             <tbody id="myTable">
@@ -100,18 +99,13 @@ $(document).ready(function(){
         success: function(resp){
 
             $.each(resp.data, function( index, value ) {
-                generi="";
-                $.each(value.Genre, function(index,value){
-                    generi+="-"+value+"<br>";
-                });
                 table.row.add([
-                    value.Title,
-                    generi,
-                    value.Director,
-                    value.Year,
-                    value.Rating,
-                    value.Revenue,
-                    value.Runtime]).draw();
+                    value.RUNNER_UP,
+                    value.RUNNER_UP_ATP_RANKING,
+                    value.YEAR,
+                    value.TOURNAMENT,
+                    value.TOURNAMENT_SURFACE,
+                    value.WINNER]).draw();
             });
 
         },
