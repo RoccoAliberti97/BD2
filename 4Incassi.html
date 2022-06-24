@@ -63,11 +63,11 @@
         
         <form action="">
         <label for="customRange">Seleziona Anni:</label>
-        <input id="myRange" type="range" class="custom-range"  name="points1" min="2006" max="2016" >
+        <input id="myRange" type="range" class="custom-range"  name="points1" min="1968" max="2022" >
         </form>
         <p>Dal: <span id="demo"></span></p>
         <form action="">
-        <input id="myRange2" type="range" class="custom-range" name="points2" min="2006" max="2016" >
+        <input id="myRange2" type="range" class="custom-range" name="points2" min="1968" max="2022" >
         </form>
         <p>Al: <span id="demo2"></span></p>
 
@@ -77,8 +77,8 @@
       <h5>Step 2</h5>
         <form action="">
           <div class="form-group">
-          <label for="selezionaGenere">Scegli la Categoria:</label>
-          <select class="form-control" id="selezionaGenere">
+          <label for="selezionaTennista">Scegli la Categoria:</label>
+          <select class="form-control" id="selezionaTennista">
           </select>
           </div>
         </form>
@@ -113,9 +113,9 @@ slider2.oninput = function() {
   output2.innerHTML = this.value;
 }
 
-var select1=$("#selezionaGenere").append(new Option("Seleziona genere", ""));
+var select1=$("#selezionaTennista").append(new Option("Seleziona Tennista", ""));
 $.ajax({
-        url: "http://localhost:8080/api/getGenres",
+        url: "http://localhost:8080/api/getWinner",
         type: "GET",
         dataType: 'json',
         contentType: "application/json",
@@ -132,16 +132,16 @@ $.ajax({
 function mostraGrafico(){
   daAnno=slider.value;
   aAnno=slider2.value;
-  genereSelezionato=$("#selezionaGenere option:selected").text();
+  genereSelezionato=$("#selezionaTennista option:selected").text();
   window.open("4Linea.html?"+daAnno+"&"+aAnno+"&"+genereSelezionato);
 }
 
 function visualizzaDati(){
   daAnno=slider.value;
   aAnno=slider2.value;
-  genereSelezionato=$("#selezionaGenere option:selected").text();
+  genereSelezionato=$("#selezionaTennista option:selected").text();
   datiRicavati=document.getElementById("datiRicavati");
-  document.getElementById("intestazioneModal").innerHTML="Incassi realizzati tra il "+daAnno+" e il "+aAnno+" di genere "+genereSelezionato;
+  document.getElementById("intestazioneModal").innerHTML="Incassi realizzati tra il "+daAnno+" e il "+aAnno+" di "+genereSelezionato;
      $.ajax({
         url: "http://localhost:8080/api/getRevenue/"+daAnno+"_"+aAnno+"/"+genereSelezionato,
         type: "GET",

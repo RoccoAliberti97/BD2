@@ -167,10 +167,10 @@ router.get('/getRevenue/:from_to/:tipologia', function (req, res) {
     var range=req.params.from_to.split('_');
     var from=parseInt(range[0]);
     var to=parseInt(range[1]);
-    Film.aggregate([ 
-        {$match:{ $and: [{Year:{$gte: from}}, {Year:{$lte: to}}], Genre:req.params.tipologia}},
-        {$sort : { Year : -1} },
-        {$group:{ _id:"$Year", somma:{ $sum : "$Revenue" }}}],function (err, Films) { 
+    Slam.aggregate([
+        {$match:{ $and: [{YEAR:{$gte: from}}, {YEAR:{$lte: to}}], WINNER:req.params.tipologia}},
+        {$group:{ _id:"$YEAR", somma:{ $sum : "$WINNER_PRIZE" }}},
+        {$sort : { _id : 1} }],function (err, Films) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -242,7 +242,7 @@ router.get('/getActors',function(req, res){
 
 // RESTITUISCE I Generi dei film PRESENTI NEL DATASET 
 router.get('/getGenres',function(req, res){ 
-    Slam.distinct("Genre",function(err, Generi) {
+    Slam.distinct("TOURNAMENT_SURFACE",function(err, Generi) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -255,6 +255,23 @@ router.get('/getGenres',function(req, res){
             data: Generi
         }); 
     }); 
+});
+
+// RESTITUISCE I Generi dei film PRESENTI NEL DATASET
+router.get('/getWinner',function(req, res){
+    Slam.distinct("WINNER",function(err, Generi) {
+        if (err) {
+            res.json({
+                status: "error",
+                message: err,
+            });
+        }
+        res.json({
+            status: "success",
+            message: "Films retrieved successfully",
+            data: Generi
+        });
+    });
 });
 
 
