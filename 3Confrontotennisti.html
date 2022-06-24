@@ -97,12 +97,6 @@
             <input type="checkbox" class="form-check-input" id="incassoTotale" value="" >Incasso Totale
           </label>
         </div>
-        <div class="form-check">
-          <label class="form-check-label">
-            <input type="checkbox" class="form-check-input" id="metascoreRicavato" value="" >Superficie
-          </label>
-        </div>
-
     </div>
 
     <div class="col-sm-4">
@@ -123,7 +117,7 @@ var registiLista=[];
 
 
 $.ajax({
-        url: "http://localhost:8080/api/getDirectors",
+        url: "http://localhost:8080/api/getTennisPlayers",
         type: "GET",
         dataType: 'json',
         contentType: "application/json",

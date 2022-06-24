@@ -43,7 +43,7 @@ router.get('/getTotalRevenueForPlayer/:tennista', function (req, res) {
 //Handle worst worst movie for actor
 router.get('/get_worst_movie_for_actor/:attore/:max_rating', function (req, res) { 
     var rating_inserito = parseInt(req.params.max_rating, 10); 
-    Slam.find({RUNNER_UP:req.params.attore,RUNNER_UP_ATP_RANKING:{$lte:req.params.max_rating}},function (err, Films) {
+    Slam.find({RUNNER_UP:req.params.attore,RUNNER_UP_ATP_RANKING:{$gte:req.params.max_rating}},function (err, Films) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -282,7 +282,7 @@ router.get('/getWinner',function(req, res){
 router.get('/get_best_movie_for_rating_year/:anno/:rating', function (req, res) { 
     var rating_inserito = parseInt(req.params.rating, 10); 
     var anno_inserito = parseInt(req.params.anno, 10); 
-    Film.find({Year:anno_inserito, Rating:{$gte:rating_inserito}},function (err, Films) { 
+    Slam.find({YEAR:anno_inserito, WINNER_ATP_RANKING:{$lte:rating_inserito}},function (err, Films) {
         if (err) { 
             res.json({ 
                 status: "error", 
