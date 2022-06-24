@@ -283,18 +283,18 @@ router.get('/get_best_movie_for_rating_year/:anno/:rating', function (req, res) 
     var rating_inserito = parseInt(req.params.rating, 10); 
     var anno_inserito = parseInt(req.params.anno, 10); 
     Slam.find({YEAR:anno_inserito, WINNER_ATP_RANKING:{$lte:rating_inserito}},function (err, Films) {
-        if (err) { 
+        if (err) {
             res.json({ 
                 status: "error", 
                 message: err, 
             }); 
-        } 
+        }
         res.json({ 
             status: "success", 
             message: "Films retrieved successfully", 
             data: Films 
         }); 
-    }); 
+    });
 });
 
 router.get('/', function (req, res) {
