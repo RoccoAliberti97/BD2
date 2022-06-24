@@ -9,7 +9,7 @@ Progetto Basi di Dati II Unisa a.a. 2021-2022
 - [x] Connessione Database
 - [x] Query generale
 - [ ] Query confronto
-- [ ] Query vincitori
+- [x] Query vincitori
 - [ ] Query incassi
 - [ ] Query finalisti
 - [ ] Query ranking

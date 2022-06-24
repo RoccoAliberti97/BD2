@@ -93,31 +93,23 @@ $(document).ready(function(){
     var table=$('#myTable').DataTable();
 
     $.ajax({
-        url: "http://localhost:8080/api/getFilmsYearRange/"+infoAnni[0]+"_"+infoAnni[1],
+        url: "http://localhost:8080/api/getSlamsYearRange/"+infoAnni[0]+"_"+infoAnni[1],
         type: "GET",
         dataType: 'json',
         contentType: "application/json",
         success: function(resp){
-
             $.each(resp.data, function( index, value ) {
-                generi="";
-                $.each(value.Genre, function(index,value){
-                    generi+="-"+value+"<br>";
-                });
-                attori="";
-                $.each(value.Actors, function(index,value){
-                    attori+="-"+value+"<br>";
+                $.each(value, function(index,value){
                 });
                 table.row.add([
-                    value.Title,
-                    generi,
-                    value.Director,
-                    value.Year,
-                    attori,
-                    value.Revenue,
-                    value.Runtime]).draw();
+                    value.TOURNAMENT,
+                    value.TOURNAMENT_SURFACE,
+                    value.WINNER,
+                    value.WINNER_NATIONALITY,
+                    value.YEAR,
+                    value.RUNNER_UP,
+                    value.WINNER_PRIZE]).draw();
             });
-
         },
         error: function(err){
             console.log(err)
