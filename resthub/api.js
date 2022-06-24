@@ -133,12 +133,11 @@ router.get('/getFilmDirector/:regista', function (req, res) {
 
 
 //trovare i file prodotti in un range di anni
-router.get('/getFilmsYearRange/:from_to', function (req, res) {
+router.get('/getSlamsYearRange/:from_to', function (req, res) {
     var range=req.params.from_to.split('_');
     var from=parseInt(range[0]);
     var to=parseInt(range[1]);
-    
-    Film.find({$and: [{Year:{$gte: from}}, {Year:{$lte: to}}]},function (err, Films) {
+    Slam.find({$and: [{YEAR:{$gte: from}}, {YEAR:{$lte: to}}]},function (err, Slams) {
         if (err) {
             res.json({
                 status: "error",
@@ -147,8 +146,8 @@ router.get('/getFilmsYearRange/:from_to', function (req, res) {
         }
         res.json({
             status: "success",
-            message: "Films retrieved successfully",
-            data: Films
+            message: "Slams retrieved successfully",
+            data: Slams
         });
     });
 });
@@ -158,7 +157,7 @@ router.get('/getFilmsYearsGenre/:genere/:from_to', function (req, res) {
     var range=req.params.from_to.split('_');
     var from=parseInt(range[0]);
     var to=parseInt(range[1]);
-    Film.aggregate([
+    Slam.aggregate([
             {$match:{Genre:req.params.genere}},
             {$match:{$and:[{Year:{$gte: from}}, {Year:{$lte: to}}]}},
             {
@@ -261,7 +260,7 @@ router.get('/getActors',function(req, res){
 
 // RESTITUISCE I Generi dei film PRESENTI NEL DATASET 
 router.get('/getGenres',function(req, res){ 
-    Film.distinct("Genre",function(err, Generi) { 
+    Slam.distinct("Genre",function(err, Generi) {
         if (err) { 
             res.json({ 
                 status: "error", 

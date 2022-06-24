@@ -93,12 +93,12 @@
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body">
-                  <h5 >Superficie Slam</h5>
-                  <p id="superficieSlamModal">Some text to enable scrolling..</p>
-                  <h5 >Vincitore Slam</h5>
-                  <p id="vincitoreSlamModal">Some text to enable scrolling..</p>
-                  <h5 >Finalista Slam</h5>
-                  <p id="perdenteSlamModal">Some text to enable scrolling..</p>
+                  <h5 >Nazionalità del vincitore del torneo</h5>
+                  <p id="vincitoreNazioneSlamModal">Some text to enable scrolling..</p>
+                  <h5 >Mano del vincitore del torneo</h5>
+                  <p id="vincitoreManoSlamModal">Some text to enable scrolling..</p>
+                  <h5 >Finalista del torneo</h5>
+                  <p id="finalistaSlamModal">Some text to enable scrolling..</p>
                 </div>
               </div>
             </div>
@@ -148,9 +148,9 @@
         dataType: 'json',
         contentType: "application/json",
         success: function(resp){
-          $('#superficieSlamModal').html(resp.data[0].TOURNAMENT_SURFACE);
-          $('#vincitoreSlamModal').html(resp.data[0].WINNER);
-          $('#perdenteSlamModal').html(resp.data[0].RUNNER_UP);
+          $('#vincitoreNazioneSlamModal').html(resp.data[0].WINNER_NATIONALITY);
+          $('#vincitoreManoSlamModal').html(resp.data[0].WINNER_LEFT_OR_RIGHT_HANDED);
+          $('#finalistaSlamModal').html(resp.data[0].RUNNER_UP);
           },
         error: function(err){
           console.log(err)
