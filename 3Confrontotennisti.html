@@ -65,7 +65,7 @@
         <div class="form-group">
           <label for="usr">Seleziona primo tennista:</label>
           <div class="autocomplete">
-            <input id="tennista1" class="form-control" type="text" name="tennista1" placeholder="Tennista 1">
+            <input id="regista1" class="form-control" type="text" name="regista1" placeholder="Regista 1">
           </div>
         </div>
 
@@ -73,7 +73,7 @@
         <div class="form-group">
           <label for="usr">Seleziona secondo tennista:</label>
           <div class="autocomplete">
-            <input id="tennista2" class="form-control" type="text" name="tennista2" placeholder="Tennista 2">
+            <input id="regista2" class="form-control" type="text" name="regista2" placeholder="Regista 2">
           </div>
         </div>
 
@@ -84,12 +84,12 @@
         <label >Seleziona:</label> <br>
         <div class="form-check">
           <label class="form-check-label">
-            <input type="checkbox" class="form-check-input" id="numeroVittorie" value="">Tipo torneo
+            <input type="checkbox" class="form-check-input" id="numeroFilm" value="">Tipo torneo
           </label>
         </div>
         <div class="form-check">
           <label class="form-check-label">
-            <input type="checkbox" class="form-check-input" id="rankingMedio" value="">Ranking Medio
+            <input type="checkbox" class="form-check-input" id="ratingMedio" value="">Anno
           </label>
         </div>
         <div class="form-check">
@@ -97,6 +97,12 @@
             <input type="checkbox" class="form-check-input" id="incassoTotale" value="" >Incasso Totale
           </label>
         </div>
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="checkbox" class="form-check-input" id="metascoreRicavato" value="" >Superficie
+          </label>
+        </div>
+
     </div>
 
     <div class="col-sm-4">
@@ -113,17 +119,17 @@
 </div>
 
 <script>
-var tennistiLista=[];
+var registiLista=[];
 
 
 $.ajax({
-        url: "http://localhost:8080/api/getTennisPlayers",
+        url: "http://localhost:8080/api/getDirectors",
         type: "GET",
         dataType: 'json',
         contentType: "application/json",
         success: function(resp){
             $.each(resp.data, function( index, value ) {
-                tennistiLista.push(value._id);
+                registiLista.push(value._id);
             });
         },
         error: function(err){
@@ -131,25 +137,28 @@ $.ajax({
         }
       })
 
-  autocomplete(document.getElementById("tennista1"), tennistiLista);
-  autocomplete(document.getElementById("tennista2"), tennistiLista);
+  autocomplete(document.getElementById("regista1"), registiLista);
+  autocomplete(document.getElementById("regista2"), registiLista);
 
 
   function mostraGrafico(){
-      tennista1=document.getElementById("tennista1").value;
-      tennista2=document.getElementById("tennista2").value;
-      numeroVittorie=0;
-      rankingMedio=0;
+      regista1=document.getElementById("regista1").value;
+      regista2=document.getElementById("regista2").value;
+      numeroFilm=0;
+      ratingMedio=0;
       incassoTotale=0;
+      metascoreRicavato=0;
 
-      if(document.getElementById("numeroVittorie").checked)
-        numeroVittorie=1;
-      else if(document.getElementById("rankingMedio").checked)
-        rankingMedio=1;
-      else if(document.getElementById("incassoTotale").checked)
+      if(document.getElementById("numeroFilm").checked)
+        numeroFilm=1;
+      if(document.getElementById("ratingMedio").checked)
+        ratingMedio=1;
+      if(document.getElementById("incassoTotale").checked)
         incassoTotale=1;
-      console.log("3Radar.html?"+tennista1+"&"+tennista2+"&"+numeroVittorie+"&"+rankingMedio+"&"+incassoTotale);
-      window.open("3Radar.html?"+tennista1+"&"+tennista2+"&"+numeroVittorie+"&"+rankingMedio+"&"+incassoTotale);
+      if(document.getElementById("metascoreRicavato").checked)
+        metascoreRicavato=1;
+      console.log("3Radar.html?"+regista1+"&"+regista2+"&"+numeroFilm+"&"+ratingMedio+"&"+incassoTotale+"&"+metascoreRicavato);
+      window.open("3Radar.html?"+regista1+"&"+regista2+"&"+numeroFilm+"&"+ratingMedio+"&"+incassoTotale+"&"+metascoreRicavato);
   }
 </script>
 
