@@ -55,31 +55,29 @@
 <script>
 
     var infoURL=window.location.search.substring(1).split('&');
-    regista1=infoURL[0].replace("%20"," ");
-    regista2=infoURL[1].replace("%20"," ");
+    tennista1=infoURL[0].replace("%20"," ");
+    tennista2=infoURL[1].replace("%20"," ");
 
-    numeroFilm=infoURL[2];
-    ratingMedio=infoURL[3];
+    numeroVittorie=infoURL[2];
+    rankingMedio=infoURL[3];
     incassoTotale=infoURL[4];
-    metascoreRicavato=infoURL[5];
 
     var campiPresenti=[];
 
-    var numeroFilmRegisti=[];
-    var ratingMedioRegisti=[];
-    var incassoTotaleRegisti=[];
-    var metascoreRicavatoRegisti=[];
+    var numeroVittorieTennisti=[];
+    var rankingMedioTennisti=[];
+    var incassoTotaleTennisti=[];
 
 
-    if(numeroFilm==1){
+    if(numeroVittorie==1){
         $.ajax({
-            url: "http://localhost:8080/api/getFilmDirector/"+regista1,
+            url: "http://localhost:8080/api/getWin/"+tennista1,
             type: "GET",
             dataType: 'json',
             contentType: "application/json",
             async:false,
             success: function(resp){
-                numeroFilmRegisti.push(resp.data.length);
+                numeroVittorieTennisti.push(resp.data.length);
             },
             error: function(err){
                 console.log(err)
@@ -87,14 +85,13 @@
           })
 
           $.ajax({
-            url: "http://localhost:8080/api/getFilmDirector/"+regista2,
+            url: "http://localhost:8080/api/getWin/"+tennista2,
             type: "GET",
             dataType: 'json',
             contentType: "application/json",
             async:false,
             success: function(resp){
-                numeroFilmRegisti.push(resp.data.length);
-                console.log(numeroFilmRegisti[0]);
+                numeroVittorieTennisti.push(resp.data.length);
             },
             error: function(err){
                 console.log(err)
@@ -103,15 +100,15 @@
           campiPresenti.push("Numero Tornei Vinti");
     }
 
-    if(ratingMedio==1){
+    if(rankingMedio==1){
       $.ajax({
-            url: "http://localhost:8080/api/getAVGRatingForDirector/"+regista1,
+            url: "http://localhost:8080/api/getATPRankingForPlayers/"+tennista1,
             type: "GET",
             dataType: 'json',
             contentType: "application/json",
             async:false,
             success: function(resp){
-                ratingMedioRegisti.push(resp.data[0].media);
+                rankingMedioTennisti.push(resp.data[0].media);
             },
             error: function(err){
                 console.log(err)
@@ -119,29 +116,29 @@
           })
 
           $.ajax({
-            url: "http://localhost:8080/api/getAVGRatingForDirector/"+regista2,
+            url: "http://localhost:8080/api/getATPRankingForPlayers/"+tennista2,
             type: "GET",
             dataType: 'json',
             contentType: "application/json",
             async:false,
             success: function(resp){
-                ratingMedioRegisti.push(resp.data[0].media);
+                rankingMedioTennisti.push(resp.data[0].media);
             },
             error: function(err){
                 console.log(err)
             }
           })
-          campiPresenti.push("Rating Medio");
+          campiPresenti.push("Ranking ATP Medio");
     }
     if(incassoTotale==1){
           $.ajax({
-            url: "http://localhost:8080/api/getTotalRevenueForDirector/"+regista1,
+            url: "http://localhost:8080/api/getTotalRevenueForPlayer/"+tennista1,
             type: "GET",
             dataType: 'json',
             contentType: "application/json",
             async:false,
             success: function(resp){
-                incassoTotaleRegisti.push(resp.data[0].totale);
+                incassoTotaleTennisti.push(resp.data[0].totale);
             },
             error: function(err){
                 console.log(err)
@@ -149,13 +146,13 @@
           })
 
           $.ajax({
-            url: "http://localhost:8080/api/getTotalRevenueForDirector/"+regista2,
+            url: "http://localhost:8080/api/getTotalRevenueForPlayer/"+tennista2,
             type: "GET",
             dataType: 'json',
             contentType: "application/json",
             async:false,
             success: function(resp){
-                incassoTotaleRegisti.push(resp.data[0].totale);
+                incassoTotaleTennisti.push(resp.data[0].totale);
             },
             error: function(err){
                 console.log(err)
@@ -163,46 +160,6 @@
           })
           campiPresenti.push("Incasso Totale");
     }
-    if(metascoreRicavato==1){
-
-        $.ajax({
-            url: "http://localhost:8080/api/getTotalMetascoreForDirector/"+regista1,
-            type: "GET",
-            dataType: 'json',
-            contentType: "application/json",
-            async:false,
-            success: function(resp){
-                metascoreRicavatoRegisti.push(resp.data[0].totale);
-            },
-            error: function(err){
-                console.log(err)
-            }
-          })
-
-          $.ajax({
-            url: "http://localhost:8080/api/getTotalMetascoreForDirector/"+regista2,
-            type: "GET",
-            dataType: 'json',
-            contentType: "application/json",
-            async:false,
-            success: function(resp){
-                metascoreRicavatoRegisti.push(resp.data[0].totale);
-            },
-            error: function(err){
-                console.log(err)
-            }
-          })
-          campiPresenti.push("Metascore");
-
-
-
-    }
-
-    console.log(numeroFilmRegisti);
-    console.log(ratingMedioRegisti);
-    console.log(incassoTotaleRegisti);
-    console.log(metascoreRicavatoRegisti);
-
 
     var color = Chart.helpers.color;
     var config = {
@@ -210,17 +167,17 @@
       data: {
         labels: campiPresenti,
         datasets: [{
-          label: regista1,
+          label: tennista1,
           backgroundColor: color(window.chartColors.red).alpha(0.2).rgbString(),
           borderColor: window.chartColors.red,
           pointBackgroundColor: window.chartColors.red,
-          data: [numeroFilmRegisti[0],ratingMedioRegisti[0],incassoTotaleRegisti[0],metascoreRicavatoRegisti[0]]
+          data: [numeroVittorieTennisti[0],rankingMedioTennisti[0],incassoTotaleTennisti[0]],
         }, {
-          label: regista2,
+          label: tennista2,
           backgroundColor: color(window.chartColors.blue).alpha(0.2).rgbString(),
           borderColor: window.chartColors.blue,
           pointBackgroundColor: window.chartColors.blue,
-          data: [numeroFilmRegisti[1],ratingMedioRegisti[1],incassoTotaleRegisti[1],metascoreRicavatoRegisti[1]]
+          data: [numeroVittorieTennisti[1],rankingMedioTennisti[1],incassoTotaleTennisti[1]]
         }]
       },
       options: {

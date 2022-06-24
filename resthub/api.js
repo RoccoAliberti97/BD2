@@ -15,17 +15,17 @@ router.get('/getSlams',function (req, res) {
         }
         res.json({
             status: "success",
-            message: "Films retrieved successfully",
+            message: "Slams retrieved successfully",
             data: Slams
         });
     });
 });
 
 //Handle Total revenue from director 
-router.get('/getTotalRevenueForDirector/:regista', function (req, res) { 
-    Film.aggregate([ 
-        {$match: {Director: req.params.regista}}, 
-        { $group : {_id: "$Director", totale: { $sum : "$Revenue" }}}],function (err, total_revenue) { 
+router.get('/getTotalRevenueForPlayer/:tennista', function (req, res) {
+    Slam.aggregate([
+        {$match: {WINNER: req.params.tennista}},
+        { $group : {_id: "$WINNER", totale: { $sum : "$WINNER_PRIZE" }}}],function (err, total_revenue) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -34,25 +34,7 @@ router.get('/getTotalRevenueForDirector/:regista', function (req, res) {
         } 
         res.json({ 
             status: "success", 
-            message: "Films retrieved successfully", 
-            data: total_revenue 
-        }); 
-    }); 
-});
-
-router.get('/getTotalMetascoreForDirector/:regista', function (req, res) { 
-    Film.aggregate([ 
-        {$match: {Director: req.params.regista}}, 
-        { $group : {_id: "$Director", totale: { $sum : "$Metascore" }}}],function (err, total_revenue) { 
-        if (err) { 
-            res.json({ 
-                status: "error", 
-                message: err, 
-            }); 
-        } 
-        res.json({ 
-            status: "success", 
-            message: "Films retrieved successfully", 
+            message: "Slams retrieved successfully",
             data: total_revenue 
         }); 
     }); 
@@ -95,10 +77,10 @@ router.get('/getSlamsForName/:name', function (req, res) {
 });
 
 //Handle average rating from director 
-router.get('/getAVGRatingForDirector/:regista', function (req, res) { 
-    Film.aggregate([ 
-        {$match: {Director: req.params.regista}}, 
-        { $group : {_id: "$Director", media: { $avg : "$Rating" }}}],function (err, Films) { 
+router.get('/getATPRankingForPlayers/:tennista', function (req, res) {
+    Slam.aggregate([
+        {$match: {WINNER: req.params.tennista}},
+        { $group : {_id: "$WINNER", media: { $avg : "$WINNER_ATP_RANKING" }}}],function (err, Slams) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -107,16 +89,16 @@ router.get('/getAVGRatingForDirector/:regista', function (req, res) {
         } 
         res.json({ 
             status: "success", 
-            message: "Films retrieved successfully", 
-            data: Films 
+            message: "Slams retrieved successfully",
+            data: Slams
         }); 
     }); 
 });
 
 
 //ricerca film prodotti da un regista
-router.get('/getFilmDirector/:regista', function (req, res) {
-    Film.find({Director:req.params.regista},function (err, Films) {
+router.get('/getWin/:tennista', function (req, res) {
+    Slam.find({WINNER:req.params.tennista},function (err, Slams) {
         if (err) {
             res.json({
                 status: "error",
@@ -125,8 +107,8 @@ router.get('/getFilmDirector/:regista', function (req, res) {
         }
         res.json({
             status: "success",
-            message: "Films retrieved successfully",
-            data: Films
+            message: "Slams retrieved successfully",
+            data: Slams
         });
     });
 });
@@ -222,9 +204,9 @@ router.get('/getFilmsForGenre/:genre',function(req, res){
 });
 
 // RESTITUISCE I REGISTI PRESENTI NEL DATASET 
-router.get('/getDirectors',function(req, res){ 
-    Film.aggregate([ 
-        {$group:{ _id:"$Director"}}],function(err, Directors) { 
+router.get('/getTennisPlayers',function(req, res){
+    Slam.aggregate([
+        {$group:{ _id:"$WINNER"}}],function(err, Tennisti) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -233,8 +215,8 @@ router.get('/getDirectors',function(req, res){
         } 
         res.json({ 
             status: "success", 
-            message: "Films retrieved successfully", 
-            data: Directors 
+            message: "Slams retrieved successfully",
+            data: Tennisti
         }); 
     }); 
 });
