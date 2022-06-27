@@ -61,7 +61,7 @@
       var anno2=[];
 
     $.ajax({
-        url: "http://localhost:8080/api/getFilmsYearsGenre/Serbian/"+2000+"_"+2022,
+        url: "http://localhost:8080/api/getFilmsYearsGenre/"+infoURL[2]+"/"+infoURL[0]+"_"+infoURL[1],
         type: "GET",
         dataType: 'json',
         contentType: "application/json",
@@ -70,8 +70,6 @@
             $.each(resp.data, function( index, value ) {
                dataGenere1.push(value.total);
               anno1.push(value._id);
-              //console.log(anno1);
-              //console.log(dataGenere1)
             });
 
         },
@@ -81,7 +79,7 @@
       })
 
     $.ajax({
-        url: "http://localhost:8080/api/getFilmsYearsGenre/Spanish/"+2000+"_"+2022,
+        url: "http://localhost:8080/api/getFilmsYearsGenre/"+infoURL[3]+"/"+infoURL[0]+"_"+infoURL[1],
         type: "GET",
         dataType: 'json',
         contentType: "application/json",
@@ -90,8 +88,6 @@
             $.each(resp.data, function( index, value ) {
                dataGenere2.push(value.total);
                anno2.push(value._id);
-               //console.log(anno2);
-              //console.log(dataGenere2)
             });
 
         },
@@ -106,7 +102,7 @@
     }
     var color = Chart.helpers.color;
     var barChartData = {
-      labels: MONTHS,
+      labels: anno1,
       datasets: [{
         label: infoURL[2],
         backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
@@ -126,7 +122,6 @@
 
     window.onload = function() {
       var ctx = document.getElementById('canvas').getContext('2d');
-      console.log(dataGenere2)
       window.myBar = new Chart(ctx, {
         type: 'bar',
         data: barChartData,
@@ -147,7 +142,7 @@
     setTimeout(myFunction, 200);
 
     function myFunction(){
-      window.myBar.update();
+        window.myBar.update();
     }
     
 
