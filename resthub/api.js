@@ -42,7 +42,7 @@ router.get('/getTotalRevenueForPlayer/:tennista', function (req, res) {
 
 //Handle worst worst movie for actor
 router.get('/get_worst_winner/:attore/:max_rating', function (req, res) {
-    Slam.find({WINNER:req.params.attore,WINNER_ATP_RANKING:{$gte:req.params.max_rating}},function (err, Films) {
+    Slam.find({WINNER:req.params.attore,WINNER_ATP_RANKING:{$gte:req.params.max_rating}},function (err, Slams) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -52,8 +52,8 @@ router.get('/get_worst_winner/:attore/:max_rating', function (req, res) {
         res.json({ 
              
             status: "success", 
-            message: "Films retrieved successfully", 
-            data: Films 
+            message: "Slams retrieved successfully",
+            data: Slams
         }); 
     }); 
 });
@@ -61,7 +61,7 @@ router.get('/get_worst_winner/:attore/:max_rating', function (req, res) {
 //Handle worst worst movie for actor
 router.get('/get_worst_runner_up/:attore/:max_rating', function (req, res) {
     var rating_inserito = parseInt(req.params.max_rating, 10);
-    Slam.find({RUNNER_UP:req.params.attore,RUNNER_UP_ATP_RANKING:{$gte:req.params.max_rating}},function (err, Films) {
+    Slam.find({RUNNER_UP:req.params.attore,RUNNER_UP_ATP_RANKING:{$gte:req.params.max_rating}},function (err, Slams) {
         if (err) {
             res.json({
                 status: "error",
@@ -71,8 +71,8 @@ router.get('/get_worst_runner_up/:attore/:max_rating', function (req, res) {
         res.json({
 
             status: "success",
-            message: "Films retrieved successfully",
-            data: Films
+            message: "Slams retrieved successfully",
+            data: Slams
         });
     });
 });
@@ -153,19 +153,19 @@ router.get('/getSlamsYearRange/:from_to', function (req, res) {
 });
 
 //Numero di film prodotti in un range di anni e che corrispondono al genere specificato
-router.get('/getFilmsYearsGenre/:genere/:from_to', function (req, res) {
+router.get('/getSlamsYearsNationality/:nazione/:from_to', function (req, res) {
     var range=req.params.from_to.split('_');
     var from=parseInt(range[0]);
     var to=parseInt(range[1]);
     Slam.aggregate([
-            {$match:{WINNER_NATIONALITY:req.params.genere}},
+            {$match:{WINNER_NATIONALITY:req.params.nazione}},
             {$match:{$and:[{YEAR:{$gte: from}}, {YEAR:{$lte: to}}]}},
             {
                  $group: {
                        _id: "$YEAR",
                        total: { $sum: 1 }
                    }
-            },{$sort : { _id : 1} }],function (err, Films) {
+            },{$sort : { _id : 1} }],function (err, Slams) {
         if (err) {
             res.json({
                 status: "error",
@@ -174,8 +174,8 @@ router.get('/getFilmsYearsGenre/:genere/:from_to', function (req, res) {
         }
         res.json({
             status: "success",
-            message: "Films retrieved successfully",
-            data: Films
+            message: "Slams retrieved successfully",
+            data: Slams
         });
     });
 });
@@ -188,7 +188,7 @@ router.get('/getRevenue/:from_to/:tipologia', function (req, res) {
     Slam.aggregate([
         {$match:{ $and: [{YEAR:{$gte: from}}, {YEAR:{$lte: to}}], WINNER:req.params.tipologia}},
         {$group:{ _id:"$YEAR", somma:{ $sum : "$WINNER_PRIZE" }}},
-        {$sort : { _id : 1} }],function (err, Films) {
+        {$sort : { _id : 1} }],function (err, Slams) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -197,29 +197,12 @@ router.get('/getRevenue/:from_to/:tipologia', function (req, res) {
         } 
         res.json({ 
             status: "success", 
-            message: "Films retrieved successfully", 
-            data: Films 
+            message: "Slams retrieved successfully",
+            data: Slams
         }); 
     }); 
 });
 
-
-// Handle genre actions 
-router.get('/getFilmsForGenre/:genre',function(req, res){ 
-    Film.find({Genre:req.params.genre},function(err, Films_for_genre) { 
-        if (err) { 
-            res.json({ 
-                status: "error", 
-                message: err, 
-            }); 
-        } 
-        res.json({ 
-            status: "success", 
-            message: "Films retrieved successfully", 
-            data: Films_for_genre 
-        }); 
-    }); 
-});
 
 // RESTITUISCE I REGISTI PRESENTI NEL DATASET 
 router.get('/getTennisPlayers',function(req, res){
@@ -242,7 +225,7 @@ router.get('/getTennisPlayers',function(req, res){
 // RESTITUISCE I REGISTI PRESENTI NEL DATASET 
 router.get('/getRunner_Up',function(req, res){
     Slam.aggregate([
-        { "$group": { _id: "$RUNNER_UP" } }],function(err, Actors) {
+        { "$group": { _id: "$RUNNER_UP" } }],function(err, Runner_Up) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -251,15 +234,15 @@ router.get('/getRunner_Up',function(req, res){
         } 
         res.json({ 
             status: "success", 
-            message: "Films retrieved successfully", 
-            data: Actors
+            message: "Runner_Up retrieved successfully",
+            data: Runner_Up
         }); 
     }); 
 });
 
 // RESTITUISCE I Generi dei film PRESENTI NEL DATASET 
-router.get('/getGenres',function(req, res){ 
-    Slam.distinct("WINNER_NATIONALITY",function(err, Generi) {
+router.get('/getNationality',function(req, res){
+    Slam.distinct("WINNER_NATIONALITY",function(err, Nazione) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -268,15 +251,15 @@ router.get('/getGenres',function(req, res){
         } 
         res.json({ 
             status: "success", 
-            message: "Films retrieved successfully", 
-            data: Generi
+            message: "Nation retrieved successfully",
+            data: Nazione
         }); 
     }); 
 });
 
 // RESTITUISCE I Generi dei film PRESENTI NEL DATASET
 router.get('/getWinner',function(req, res){
-    Slam.distinct("WINNER",function(err, Generi) {
+    Slam.distinct("WINNER",function(err, Winner) {
         if (err) {
             res.json({
                 status: "error",
@@ -285,8 +268,8 @@ router.get('/getWinner',function(req, res){
         }
         res.json({
             status: "success",
-            message: "Films retrieved successfully",
-            data: Generi
+            message: "Winner retrieved successfully",
+            data: Winner
         });
     });
 });
@@ -299,7 +282,7 @@ router.get('/getWinner',function(req, res){
 router.get('/get_best_ranking_for_winner_year/:anno/:ranking', function (req, res) {
     var rating_inserito = parseInt(req.params.ranking, 10);
     var anno_inserito = parseInt(req.params.anno, 10); 
-    Slam.find({YEAR:anno_inserito, WINNER_ATP_RANKING:{$lte:rating_inserito}},function (err, Films) {
+    Slam.find({YEAR:anno_inserito, WINNER_ATP_RANKING:{$lte:rating_inserito}},function (err, Slams) {
         if (err) {
             res.json({ 
                 status: "error", 
@@ -308,8 +291,8 @@ router.get('/get_best_ranking_for_winner_year/:anno/:ranking', function (req, re
         }
         res.json({ 
             status: "success", 
-            message: "Films retrieved successfully", 
-            data: Films 
+            message: "Slams retrieved successfully",
+            data: Slams
         }); 
     });
 });
@@ -327,8 +310,8 @@ router.get('/get_best_ranking_for_runner_up_year/:anno/:ranking', function (req,
         }
         res.json({
             status: "success",
-            message: "Films retrieved successfully",
-            data: Films
+            message: "Slams retrieved successfully",
+            data: Slams
         });
     });
 });
