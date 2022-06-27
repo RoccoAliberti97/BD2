@@ -60,12 +60,11 @@
  <table id="myTable" class="table table-bordered table-hover " >
             <thead>
               <tr>
-                <th>Tennista perdente</th>
+                <th>Tennista</th>
                 <th>Ranking</th>
                 <th>Anno</th>
                 <th>Torneo</th>
                 <th>Superficie</th>
-                <th>Tennista vincente</th>
               </tr>
             </thead>
             <tbody id="myTable">
@@ -92,7 +91,29 @@ $(document).ready(function(){
     var table=$('#myTable').DataTable();
 
     $.ajax({
-        url: "http://localhost:8080/api/get_worst_movie_for_actor/"+attoriRating[0]+"/"+attoriRating[1],
+        url: "http://localhost:8080/api/get_worst_winner/"+attoriRating[0]+"/"+attoriRating[1],
+        type: "GET",
+        dataType: 'json',
+        contentType: "application/json",
+        success: function(resp){
+
+            $.each(resp.data, function( index, value ) {
+                table.row.add([
+                    value.WINNER,
+                    value.WINNER_ATP_RANKING,
+                    value.YEAR,
+                    value.TOURNAMENT,
+                    value.TOURNAMENT_SURFACE]).draw();
+            });
+
+        },
+        error: function(err){
+            console.log(err)
+        }
+      });
+
+    $.ajax({
+        url: "http://localhost:8080/api/get_worst_runner_up/"+attoriRating[0]+"/"+attoriRating[1],
         type: "GET",
         dataType: 'json',
         contentType: "application/json",
@@ -104,15 +125,14 @@ $(document).ready(function(){
                     value.RUNNER_UP_ATP_RANKING,
                     value.YEAR,
                     value.TOURNAMENT,
-                    value.TOURNAMENT_SURFACE,
-                    value.WINNER]).draw();
+                    value.TOURNAMENT_SURFACE]).draw();
             });
 
         },
         error: function(err){
             console.log(err)
         }
-      })
+    })
 });
 
     $("#schermata_caricamento").fadeOut(400);

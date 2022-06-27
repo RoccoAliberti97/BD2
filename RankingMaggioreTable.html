@@ -62,7 +62,7 @@
               <tr>
                 <th>Anno</th>
                 <th>Ranking</th>
-                <th>Vincitore</th>
+                <th>Tennista</th>
                 <th>Torneo</th>
                 <th>Superficie</th>
               </tr>
@@ -91,7 +91,7 @@ $(document).ready(function(){
     var table=$('#myTable').DataTable();
 
     $.ajax({
-        url: "http://localhost:8080/api/get_best_movie_for_rating_year/"+ratingAnno[0]+"/"+ratingAnno[1],
+        url: "http://localhost:8080/api/get_best_ranking_for_winner_year/"+ratingAnno[0]+"/"+ratingAnno[1],
         type: "GET",
         dataType: 'json',
         contentType: "application/json",
@@ -111,6 +111,28 @@ $(document).ready(function(){
             console.log(err)
         }
       })
+
+    $.ajax({
+        url: "http://localhost:8080/api/get_best_ranking_for_runner_up_year/"+ratingAnno[0]+"/"+ratingAnno[1],
+        type: "GET",
+        dataType: 'json',
+        contentType: "application/json",
+        success: function(resp){
+
+            $.each(resp.data, function( index, value ) {
+                table.row.add([
+                    value.YEAR,
+                    value.RUNNER_UP_ATP_RANKING,
+                    value.RUNNER_UP,
+                    value.TOURNAMENT,
+                    value.TOURNAMENT_SURFACE]).draw();
+            });
+
+        },
+        error: function(err){
+            console.log(err)
+        }
+    })
 });
 
     $("#schermata_caricamento").fadeOut(400);

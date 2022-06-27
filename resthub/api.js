@@ -41,9 +41,8 @@ router.get('/getTotalRevenueForPlayer/:tennista', function (req, res) {
 });
 
 //Handle worst worst movie for actor
-router.get('/get_worst_movie_for_actor/:attore/:max_rating', function (req, res) { 
-    var rating_inserito = parseInt(req.params.max_rating, 10); 
-    Slam.find({RUNNER_UP:req.params.attore,RUNNER_UP_ATP_RANKING:{$gte:req.params.max_rating}},function (err, Films) {
+router.get('/get_worst_winner/:attore/:max_rating', function (req, res) {
+    Slam.find({WINNER:req.params.attore,WINNER_ATP_RANKING:{$gte:req.params.max_rating}},function (err, Films) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -57,6 +56,25 @@ router.get('/get_worst_movie_for_actor/:attore/:max_rating', function (req, res)
             data: Films 
         }); 
     }); 
+});
+
+//Handle worst worst movie for actor
+router.get('/get_worst_runner_up/:attore/:max_rating', function (req, res) {
+    var rating_inserito = parseInt(req.params.max_rating, 10);
+    Slam.find({RUNNER_UP:req.params.attore,RUNNER_UP_ATP_RANKING:{$gte:req.params.max_rating}},function (err, Films) {
+        if (err) {
+            res.json({
+                status: "error",
+                message: err,
+            });
+        }
+        res.json({
+
+            status: "success",
+            message: "Films retrieved successfully",
+            data: Films
+        });
+    });
 });
 
 //ricerca slam per nome
@@ -140,14 +158,14 @@ router.get('/getFilmsYearsGenre/:genere/:from_to', function (req, res) {
     var from=parseInt(range[0]);
     var to=parseInt(range[1]);
     Slam.aggregate([
-            {$match:{TOURNAMENT_SURFACE:req.params.genere}},
+            {$match:{WINNER_NATIONALITY:req.params.genere}},
             {$match:{$and:[{YEAR:{$gte: from}}, {YEAR:{$lte: to}}]}},
             {
                  $group: {
-                       _id: "YEAR",
+                       _id: "$YEAR",
                        total: { $sum: 1 }
                    }
-            }],function (err, Films) {
+            },{$sort : { _id : 1} }],function (err, Films) {
         if (err) {
             res.json({
                 status: "error",
@@ -222,9 +240,8 @@ router.get('/getTennisPlayers',function(req, res){
 });
 
 // RESTITUISCE I REGISTI PRESENTI NEL DATASET 
-router.get('/getActors',function(req, res){ 
+router.get('/getRunner_Up',function(req, res){
     Slam.aggregate([
-        {"$unwind": "$RUNNER_UP" } ,
         { "$group": { _id: "$RUNNER_UP" } }],function(err, Actors) {
         if (err) { 
             res.json({ 
@@ -242,7 +259,7 @@ router.get('/getActors',function(req, res){
 
 // RESTITUISCE I Generi dei film PRESENTI NEL DATASET 
 router.get('/getGenres',function(req, res){ 
-    Slam.distinct("TOURNAMENT_SURFACE",function(err, Generi) {
+    Slam.distinct("WINNER_NATIONALITY",function(err, Generi) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -279,8 +296,8 @@ router.get('/getWinner',function(req, res){
 
 
 //handle best movie from rating and year 
-router.get('/get_best_movie_for_rating_year/:anno/:rating', function (req, res) { 
-    var rating_inserito = parseInt(req.params.rating, 10); 
+router.get('/get_best_ranking_for_winner_year/:anno/:ranking', function (req, res) {
+    var rating_inserito = parseInt(req.params.ranking, 10);
     var anno_inserito = parseInt(req.params.anno, 10); 
     Slam.find({YEAR:anno_inserito, WINNER_ATP_RANKING:{$lte:rating_inserito}},function (err, Films) {
         if (err) {
@@ -297,6 +314,24 @@ router.get('/get_best_movie_for_rating_year/:anno/:rating', function (req, res) 
     });
 });
 
+//handle best movie from rating and year
+router.get('/get_best_ranking_for_runner_up_year/:anno/:ranking', function (req, res) {
+    var rating_inserito = parseInt(req.params.ranking, 10);
+    var anno_inserito = parseInt(req.params.anno, 10);
+    Slam.find({YEAR:anno_inserito, RUNNER_UP_ATP_RANKING:{$lte:rating_inserito}},function (err, Films) {
+        if (err) {
+            res.json({
+                status: "error",
+                message: err,
+            });
+        }
+        res.json({
+            status: "success",
+            message: "Films retrieved successfully",
+            data: Films
+        });
+    });
+});
 router.get('/', function (req, res) {
     res.json({
         status: 'API Its Working',
