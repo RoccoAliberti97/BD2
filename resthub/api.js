@@ -301,7 +301,7 @@ router.get('/get_best_ranking_for_winner_year/:anno/:ranking', function (req, re
 router.get('/get_best_ranking_for_runner_up_year/:anno/:ranking', function (req, res) {
     var rating_inserito = parseInt(req.params.ranking, 10);
     var anno_inserito = parseInt(req.params.anno, 10);
-    Slam.find({YEAR:anno_inserito, RUNNER_UP_ATP_RANKING:{$lte:rating_inserito}},function (err, Films) {
+    Slam.find({YEAR:anno_inserito, RUNNER_UP_ATP_RANKING:{$lte:rating_inserito}},function (err, Slams) {
         if (err) {
             res.json({
                 status: "error",
