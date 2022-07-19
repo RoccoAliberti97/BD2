@@ -41,8 +41,8 @@ router.get('/getTotalRevenueForPlayer/:tennista', function (req, res) {
 });
 
 //Handle worst worst movie for actor
-router.get('/get_worst_winner/:attore/:max_rating', function (req, res) {
-    Slam.find({WINNER:req.params.attore,WINNER_ATP_RANKING:{$gte:req.params.max_rating}},function (err, Slams) {
+router.get('/get_worst_winner/:tennista/:max_rating', function (req, res) {
+    Slam.find({WINNER:req.params.tennista,WINNER_ATP_RANKING:{$gte:req.params.max_rating}},function (err, Slams) {
         if (err) { 
             res.json({ 
                 status: "error", 
@@ -59,9 +59,9 @@ router.get('/get_worst_winner/:attore/:max_rating', function (req, res) {
 });
 
 //Handle worst worst movie for actor
-router.get('/get_worst_runner_up/:attore/:max_rating', function (req, res) {
+router.get('/get_worst_runner_up/:tennista/:max_rating', function (req, res) {
     var rating_inserito = parseInt(req.params.max_rating, 10);
-    Slam.find({RUNNER_UP:req.params.attore,RUNNER_UP_ATP_RANKING:{$gte:req.params.max_rating}},function (err, Slams) {
+    Slam.find({RUNNER_UP:req.params.tennista,RUNNER_UP_ATP_RANKING:{$gte:req.params.max_rating}},function (err, Slams) {
         if (err) {
             res.json({
                 status: "error",
@@ -181,12 +181,12 @@ router.get('/getSlamsYearsNationality/:nazione/:from_to', function (req, res) {
 });
 
 //Dato un range di anni e una tipologia di film, restituisce la somma degli incassi realizzati per singolo anno;
-router.get('/getRevenue/:from_to/:tipologia', function (req, res) {
+router.get('/getRevenue/:from_to/:tennista', function (req, res) {
     var range=req.params.from_to.split('_');
     var from=parseInt(range[0]);
     var to=parseInt(range[1]);
     Slam.aggregate([
-        {$match:{ $and: [{YEAR:{$gte: from}}, {YEAR:{$lte: to}}], WINNER:req.params.tipologia}},
+        {$match:{ $and: [{YEAR:{$gte: from}}, {YEAR:{$lte: to}}], WINNER:req.params.tennista}},
         {$group:{ _id:"$YEAR", somma:{ $sum : "$WINNER_PRIZE" }}},
         {$sort : { _id : 1} }],function (err, Slams) {
         if (err) { 
