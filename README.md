@@ -12,5 +12,5 @@ Progetto Basi di Dati II Unisa a.a. 2021-2022
 - [x] Query vincitori
 - [x] Query incassi
 - [x] Query finalisti
-- [ ] Query ranking
-- [ ] Query genere superficie
+- [x] Query ranking
+- [x] Query genere superficie
